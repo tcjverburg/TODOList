@@ -7,8 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by ProgrammingKnowledge on 4/3/2015
+ * DatabaseHelper.java
+ * TODOList
+ *
+ * Created by Tom Verburg on 30-9-2016.
  * Source = http://www.codebind.com/android-tutorials-and-examples/android-sqlite-tutorial-example/.
+ *
+ * This activity is the database helper which contains various methods
+ * to create, access and edit the SQL database we use for this application.
+ *
+ *
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Test.db";

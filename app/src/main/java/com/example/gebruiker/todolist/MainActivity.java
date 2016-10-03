@@ -13,7 +13,18 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
+/**
+ * MainActivity.java
+ * TODOList
+ *
+ * Created by Tom Verburg on 30-9-2016.
+ *
+ * This class is the starting and only screen of the application.
+ * Here you see the to do list and tasks can be added and deleted
+ * from this list using methods from the DatabaseHelper.
+ *
+ *
+ */
 
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper myDb;
@@ -34,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddData = (Button) findViewById(R.id.button_add);
         list = new ArrayList<String>();
 
+        //Gets user input that was not added from savedInstance after rotation of device.
         if (savedInstanceState != null){
             String input = (String)savedInstanceState.getString("user input");
             editText.setText(input);
@@ -41,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         viewAll();
         addData();
+
+        //Removes task after long pressing it in the list.
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -61,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }});}
 
+    //Saves user input that was not added.
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         String userInput = editText.getText().toString();
         outState.putSerializable("user input", userInput);
     }
 
+    //Adds new tasks to the list.
     public void addData() {
         btnAddData.setOnClickListener(
                 new View.OnClickListener() {
@@ -81,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             editText.setText("");
                     }});}
 
+    //Reads all the tasks from the SQLite database.
     public void viewAll() {
         list.clear();
         theAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,  list);
