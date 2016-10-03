@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by ProgrammingKnowledge on 4/3/2015.
+ * Created by ProgrammingKnowledge on 4/3/2015
+ * Source = http://www.codebind.com/android-tutorials-and-examples/android-sqlite-tutorial-example/.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Test.db";
@@ -47,11 +48,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-
     public Integer deleteData (String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
     }
-
-
 }
