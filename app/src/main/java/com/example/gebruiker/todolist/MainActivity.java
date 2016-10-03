@@ -2,7 +2,7 @@ package com.example.gebruiker.todolist;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,9 +15,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     DatabaseHelper myDb;
-    EditText editName;
+    EditText editText;
     Button btnAddData;
     private ArrayList<String> list;
     private ListAdapter theAdapter;
@@ -30,15 +30,17 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         myDb = new DatabaseHelper(this);
 
-        editName = (EditText) findViewById(R.id.editText_name);
+        editText = (EditText) findViewById(R.id.editText);
         btnAddData = (Button) findViewById(R.id.button_add);
         list = new ArrayList<String>();
 
-        AddData();
+        if (savedInstanceState != null){
+            String input = (String)savedInstanceState.getString("user input");
+            editText.setText(input);
+        }
+
         viewAll();
-
-
-
+        addData();
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -50,27 +52,33 @@ public class MainActivity extends ActionBarActivity {
                         String idToDo =    res.getString(res.getColumnIndex("ID"));
                         Integer deletedRows = myDb.deleteData(idToDo);
                         if (deletedRows > 0){
-                            Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Task removed", Toast.LENGTH_SHORT).show();
                             }
                         else
-                            Toast.makeText(MainActivity.this, "Data not Deleted", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Task not remmoved", Toast.LENGTH_SHORT).show();
                     }}}
                 viewAll();
                 return true;
             }});}
 
-    public void AddData() {
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String userInput = editText.getText().toString();
+        outState.putSerializable("user input", userInput);
+    }
+
+    public void addData() {
         btnAddData.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean isInserted = myDb.insertData(editName.getText().toString());
-                        if (isInserted == true){
-                            Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                            Toast.makeText(MainActivity.this, "Data not Inserted", Toast.LENGTH_LONG).show();
-                        viewAll();
+                         boolean isInserted = myDb.insertData(editText.getText().toString());
+                            if (isInserted == true) {
+                                Toast.makeText(MainActivity.this, "Task added", Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(MainActivity.this, "Task not added", Toast.LENGTH_SHORT).show();
+                            viewAll();
+                            editText.setText("");
                     }});}
 
     public void viewAll() {
